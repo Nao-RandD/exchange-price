@@ -20,7 +20,8 @@ def truncate(num,n):
 price_jp = 2000.0
 
 # 現在の時刻を取得
-dt_now = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+dt_now = datetime.datetime.now()
+dt_nowformat = dt_now.strftime('%Y年%m月%d日 %H:%M:%S')
 
 print(dt_now, 'における為替で', price_jp, 'をそれぞれの通貨で算出')
 
@@ -67,14 +68,15 @@ currency_dic = {'アメリカ': 'JPY=X',
 country_list = list(currency_dic)
 
 # テキストファイルを開く
-f = open('output.csv', 'a')
+f = open('output.csv', 'w')
 
 # ヘッダーとして現在時刻を書き込む
-header = dt_now + '時点\n\n'
+header = str(dt_now) + ' Exchange Rate \n\n'
 f.write(header)
 
 i = 0
 for country in country_list:
+    print(i+1, '/', len(country_list))
     # 国ごとの為替金額をAPIから取得
     result = get_quote_yahoo(currency_dic.get(country))
     ary_result = result["price"].values
